@@ -2,9 +2,9 @@
 
 ## Current status
 
-**Public candidate image passed an unauthenticated pull and keyless container health test; template installation remains pending.**
+**Public candidate passed its pull and runtime checks and has been promoted unchanged to `latest`; Community Applications submission remains pending.**
 
-No provider credential has been used. Temporary test containers, local test images, build cache, and temporary directories were removed after validation. The local Unraid test template remains and points to the public immutable candidate tag.
+No provider credential has been used. Temporary test containers, local test images, build cache, and temporary directories were removed after validation. The retained Unraid template now points to the promoted public `latest` tag.
 
 ## Completed
 
@@ -31,11 +31,11 @@ No provider credential has been used. Temporary test containers, local test imag
 - public raw template and 512×512 PNG icon URLs loaded successfully
 - local Unraid user template now points to `ghcr.io/mircoblitz/gods-eye-view:0.1.1-unraid.1`
 - post-test cleanup removed all local God's Eye View containers and image tags, project-created build cache, and project-created remote temporary directories; the template and icon were retained
+- the owner confirmed the application itself runs correctly in the intended environment
+- manual promotion workflow run `34659442964` added `latest` to the tested candidate without rebuilding it
+- registry inspection confirmed `latest` and `0.1.1-unraid.1` resolve to the same multi-architecture digest, `sha256:ef235a0c94d56569b30bf8b7fe7d7d2a9d8861a1e50b87445b0e98ac9146feec`
+- the retained Unraid user template was restored to the production `latest` image reference
 
 ## Outstanding
 
-- template-based container installation on host port 4173
-- interactive globe initialization in the user's browser
-- keyless WebUI and layer checks
-- restart and recreation
-- promotion of the tested candidate manifest to `latest`
+- Community Applications submission and resulting catalog status
