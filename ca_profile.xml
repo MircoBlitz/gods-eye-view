@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Maintainer>
+<CommunityApplications>
   <Icon>https://github.com/MircoBlitz.png</Icon>
-  <Profile>MircoBlitz maintains this Unraid image, template, and deployment documentation for God's Eye View.</Profile>
-  <WebPage>https://github.com/MircoBlitz</WebPage>
-  <Forum>https://github.com/bilawalsidhu/gods-eye-view/issues</Forum>
-</Maintainer>
+  <Profile>MircoBlitz maintains this Unraid image, template, and deployment documentation for God's Eye View. Packaging and template support is provided through the repository issue tracker.</Profile>
+  <WebPage>https://github.com/MircoBlitz/gods-eye-view</WebPage>
+  <Forum>https://github.com/MircoBlitz/gods-eye-view/issues</Forum>
+</CommunityApplications>

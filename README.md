@@ -6,7 +6,7 @@ The image packages the upstream `v0.1.1` application at commit `65bc522f49dc1166
 
 ## Status
 
-Candidate `0.1.1-unraid.1` is published for AMD64 and ARM64. Its unauthenticated pull and keyless Docker health test passed on Unraid. Promotion to `latest` and Community Applications release are deliberately withheld until the template installation test passes; see [test results](docs/test-results.md).
+Candidate `0.1.1-unraid.1` is published for AMD64 and ARM64. Its unauthenticated pull and keyless Docker health test passed on Unraid, and the tested manifest was promoted unchanged to `latest`. Community Applications submission remains pending; see [test results](docs/test-results.md).
 
 ## What works without keys
 
@@ -14,7 +14,7 @@ The app starts without an account or API key. Its keyless paths include Esri sat
 
 ## Install on Unraid
 
-After the tested candidate is promoted to `latest`, use this template URL:
+Use this template URL:
 
 ```text
 https://raw.githubusercontent.com/MircoBlitz/gods-eye-view/main/gods-eye-view.xml

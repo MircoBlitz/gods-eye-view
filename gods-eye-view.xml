@@ -7,10 +7,10 @@
   <MyIP/>
   <Shell>sh</Shell>
   <Privileged>false</Privileged>
-  <Support>https://github.com/bilawalsidhu/gods-eye-view/issues</Support>
+  <Support>https://github.com/MircoBlitz/gods-eye-view/issues</Support>
   <Project>https://github.com/bilawalsidhu/gods-eye-view</Project>
   <Overview>God's Eye View is a browser-based 3D globe for exploring public aircraft, ship, satellite, earthquake, traffic, camera, radio, fire, and other geospatial data. This image packages the upstream v0.1.1 application and its required Vite proxy server. It starts without API keys. Optional provider credentials unlock additional data and voice features. Intended for a trusted home LAN; the application has no user authentication.</Overview>
-  <Category>Tools: Other: Status:</Category>
+  <Category>Tools:Utilities</Category>
   <WebUI>http://[IP]:[PORT:4173]/</WebUI>
   <TemplateURL>https://raw.githubusercontent.com/MircoBlitz/gods-eye-view/main/gods-eye-view.xml</TemplateURL>
   <Icon>https://raw.githubusercontent.com/MircoBlitz/gods-eye-view/main/assets/gods-eye-view.png</Icon>
