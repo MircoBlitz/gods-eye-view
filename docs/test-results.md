@@ -4,7 +4,7 @@
 
 **Public candidate image passed an unauthenticated pull and keyless container health test; template installation remains pending.**
 
-No provider credential has been used. Temporary test containers were removed after validation. The candidate image remains on dienerwurm and the local Unraid test template points to its immutable tag.
+No provider credential has been used. Temporary test containers, local test images, build cache, and temporary directories were removed after validation. The local Unraid test template remains and points to the public immutable candidate tag.
 
 ## Completed
 
@@ -30,6 +30,7 @@ No provider credential has been used. Temporary test containers were removed aft
 - a container created from the pulled candidate reached `running healthy` as user `node`; it was removed after the check
 - public raw template and 512×512 PNG icon URLs loaded successfully
 - local Unraid user template now points to `ghcr.io/mircoblitz/gods-eye-view:0.1.1-unraid.1`
+- post-test cleanup removed all local God's Eye View containers and image tags, project-created build cache, and project-created remote temporary directories; the template and icon were retained
 
 ## Outstanding
 
