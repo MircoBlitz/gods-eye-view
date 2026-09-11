@@ -2,7 +2,7 @@
 
 Docker image and Unraid Community Applications template for [God's Eye View](https://github.com/bilawalsidhu/gods-eye-view).
 
-The image packages the upstream `v0.1.1` application at commit `65bc522f49dc1166eca533996be8e789ad36cfe5`. The source archive is checksum-verified during the build. Images are built for AMD64 and ARM64.
+The image packages the upstream `v0.1.1` application at commit `65bc522f49dc1166eca533996be8e789ad36cfe5`. The source archive is checksum-verified during the build. CI validates AMD64 and ARM64 without publishing; a separate manual workflow performs an approved release.
 
 ## Status
 
@@ -72,6 +72,7 @@ The Dockerfile deliberately pins the upstream commit and archive SHA-256. An upd
 - [Security](docs/security.md)
 - [Validation plan](docs/test-plan.md)
 - [Test results](docs/test-results.md)
+- [Release procedure](docs/release.md)
 
 ## Licenses
 
