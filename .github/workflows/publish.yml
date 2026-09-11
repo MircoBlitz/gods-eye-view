@@ -39,7 +39,6 @@ jobs:
         with:
           images: ghcr.io/mircoblitz/gods-eye-view
           tags: |
-            type=raw,value=latest
             type=raw,value=${{ inputs.version }}
             type=sha
 

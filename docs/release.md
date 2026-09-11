@@ -14,13 +14,14 @@ Publication is deliberately separate from ordinary CI.
 
 From GitHub Actions, run the manual `Publish container` workflow and enter an immutable version such as `0.1.1-unraid.1`.
 
-The workflow publishes one AMD64/ARM64 manifest under three tags:
+The workflow publishes one AMD64/ARM64 candidate manifest under two tags:
 
-- `latest`
 - the entered immutable version
 - the source commit SHA tag
 
-After the first push, set the GHCR package visibility to public. Verify an unauthenticated pull before announcing the template.
+After the first push, set the GHCR package visibility to public. Verify an unauthenticated pull and install the candidate through a local test copy of the Unraid template.
+
+Only after that test passes, run the manual `Promote tested image` workflow with the same immutable version. It adds `latest` to the already-tested manifest without rebuilding it.
 
 ## Publish the template
 
