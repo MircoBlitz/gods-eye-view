@@ -45,6 +45,13 @@ jobs:
       - name: Wait for health
         run: |
           for attempt in $(seq 1 30); do
+            running=$(docker inspect --format '{{.State.Running}}' gods-eye-view-test)
+            if [ "$running" != true ]; then
+              exit_code=$(docker inspect --format '{{.State.ExitCode}}' gods-eye-view-test)
+              docker logs gods-eye-view-test
+              if [ "$exit_code" -eq 0 ]; then exit 1; fi
+              exit "$exit_code"
+            fi
             status=$(docker inspect --format '{{.State.Health.Status}}' gods-eye-view-test)
             if [ "$status" = healthy ]; then
               exit 0
@@ -60,6 +67,12 @@ jobs:
 
       - name: Verify root page
         run: curl --fail --silent --show-error http://127.0.0.1:4173/ >/dev/null
+
+      - name: Verify shared-mode security boundary
+        run: |
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Host: foreign.invalid' http://127.0.0.1:4173/api/cctv/sources)" = 403
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/api/setup/status)" = 403
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Origin: http://foreign.invalid' -H 'Content-Type: application/json' --data '{}' http://127.0.0.1:4173/api/realtime/token)" = 403
 
       - name: Record diagnostics
         if: always()
