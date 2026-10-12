@@ -2,11 +2,13 @@
 
 Docker image and Unraid Community Applications template for [God's Eye View](https://github.com/bilawalsidhu/gods-eye-view).
 
-The image packages the upstream `v0.1.1` application at commit `65bc522f49dc1166eca533996be8e789ad36cfe5`. The source archive is checksum-verified during the build. CI validates AMD64 and ARM64 without publishing; a separate manual workflow performs an approved release.
+This source packages the upstream `v0.2.1` application at commit `aa16b7c3b0166a89d8c7a6089e0aff53a22faaee`. The source archive is checksum-verified during the build. CI validates AMD64 and ARM64 without publishing; a separate manual workflow performs an approved release.
 
 ## Status
 
-Candidate `0.1.1-unraid.1` is published for AMD64 and ARM64. Its unauthenticated pull and keyless Docker health test passed on Unraid, and the tested manifest was promoted unchanged to `latest`. Community Applications submission remains pending; see [test results](docs/test-results.md).
+The `v0.2.1` update has passed local ARM64 runtime, WebUI, keyless live-data, lifecycle, upstream unit-suite, and production-build checks. Both architecture builds pass, but native AMD64 runtime validation and publication are still pending. The published `latest` image remains `0.1.1-unraid.1`; see [test results](docs/test-results.md).
+
+Upstream's official Docker path is still an open [pull request #208](https://github.com/bilawalsidhu/gods-eye-view/pull/208), without GHCR publishing. This packaging remains necessary until an official suitable image is available.
 
 ## What works without keys
 
@@ -17,7 +19,7 @@ The app starts without an account or API key. Its keyless paths include Esri sat
 Use this template URL:
 
 ```text
-https://raw.githubusercontent.com/MircoBlitz/gods-eye-view/main/gods-eye-view.xml
+https://raw.githubusercontent.com/MircoBlitz/unraid-community-apps/main/templates/gods-eye-view.xml
 ```
 
 For a manual test, copy `gods-eye-view.xml` to:
@@ -38,7 +40,7 @@ The default web interface is:
 http://UNRAID-IP:4173/
 ```
 
-No provider credential is required for the first start. Add optional credentials through the Unraid template, not through the in-app Provider Settings panel.
+No provider credential is required for the first start. Add optional credentials through the Unraid template, not through the in-app Provider Settings panel. Access by IP works without additional configuration. For a LAN hostname, including `.local` names, set `GEV_ALLOWED_HOSTS` to an explicit comma-separated list; wildcard hostnames are rejected.
 
 ## Security boundary
 
@@ -48,7 +50,7 @@ Use it only on a trusted LAN/VPN or behind a separately reviewed authenticated r
 
 `GOOGLE_MAPS_API_KEY` and `CESIUM_ION_TOKEN` are deliberately delivered to the browser by the upstream app. Treat them as public client credentials and restrict them at their providers. Other configured keys remain server-side.
 
-See [security](docs/security.md) and upstream's [SECURITY.md](https://github.com/bilawalsidhu/gods-eye-view/blob/v0.1.1/SECURITY.md).
+See [security](docs/security.md) and upstream's [SECURITY.md](https://github.com/bilawalsidhu/gods-eye-view/blob/v0.2.1/SECURITY.md).
 
 ## Image behavior
 
@@ -63,7 +65,7 @@ The container runs the upstream Vite server because it owns the application's sa
 
 ## Updates
 
-The Dockerfile deliberately pins the upstream commit and archive SHA-256. An update requires changing both values, rebuilding, and repeating the validation plan. The Unraid template follows the moving `latest` image tag after publication.
+The existing release-build contract fixes the reviewed upstream commit and archive SHA-256; it does not make the installed image immutable. The Node 24 base image receives ordinary patch updates. An update requires changing both values, rebuilding, and repeating the validation plan. The Unraid template follows the moving `latest` image tag after publication.
 
 ## Documentation
 
