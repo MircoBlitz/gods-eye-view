@@ -6,7 +6,7 @@ This source packages the upstream `v0.2.1` application at commit `aa16b7c3b0166a
 
 ## Status
 
-The `v0.2.1` update has passed local ARM64 runtime, WebUI, keyless live-data, lifecycle, upstream unit-suite, and production-build checks. Both architecture builds pass, but native AMD64 runtime validation and publication are still pending. The published `latest` image remains `0.1.1-unraid.1`; see [test results](docs/test-results.md).
+Release `0.2.1-unraid.1` is published for AMD64 and ARM64 and promoted unchanged to `latest`. It passed native AMD64 CI, both architecture builds, local ARM64 WebUI/live-data/lifecycle checks, the upstream unit suite, and an unauthenticated candidate pull/runtime check. The owner will validate the update on Unraid by installing from the published Community Applications repository; that deployment test is still outstanding. See [test results](docs/test-results.md).
 
 Upstream's official Docker path is still an open [pull request #208](https://github.com/bilawalsidhu/gods-eye-view/pull/208), without GHCR publishing. This packaging remains necessary until an official suitable image is available.
 
@@ -16,23 +16,13 @@ The app starts without an account or API key. Its keyless paths include Esri sat
 
 ## Install on Unraid
 
-Use this template URL:
+Install or update **Gods-Eye-View** through Community Applications using this repository's published template:
 
 ```text
 https://raw.githubusercontent.com/MircoBlitz/unraid-community-apps/main/templates/gods-eye-view.xml
 ```
 
-For a manual test, copy `gods-eye-view.xml` to:
-
-```text
-/boot/config/plugins/dockerMan/templates-user/my-gods-eye-view.xml
-```
-
-Then open:
-
-```text
-Docker → Add Container → Template → User Templates → Gods-Eye-View
-```
+In Unraid, open **Apps**, select **Gods-Eye-View**, review its configuration and install it. Use that published installation for the deployment test; no private user-template copy or locally built server image is needed.
 
 The default web interface is:
 

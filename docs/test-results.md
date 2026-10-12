@@ -2,7 +2,7 @@
 
 ## v0.2.1 update — 2026-10-12
 
-Local validation used Docker Desktop on Apple silicon. No private or paid provider credential was configured. No image or source update has been published yet.
+Local validation used Docker Desktop on Apple silicon; GitHub CI supplied native AMD64 validation. No private or paid provider credential was configured. Release `0.2.1-unraid.1` is published for AMD64/ARM64 and promoted unchanged to `latest`.
 
 Source: `v0.2.1`, commit `aa16b7c3b0166a89d8c7a6089e0aff53a22faaee`.
 Commit archive SHA-256: `a6020d0aa12a952585edee44a4765ab11f511e3f616927645d7ce04ce48487cb`.
@@ -23,7 +23,10 @@ Commit archive SHA-256: `a6020d0aa12a952585edee44a4765ab11f511e3f616927645d7ce04
 | Real keyless data | OpenSky: 12,384 flights, fresh HTTP 200; 828 satellites, nominal/fresh; 52 USGS earthquakes |
 | Missing provider | Active Fires honestly reported unavailable without `FIRMS_MAP_KEY` |
 | Lifecycle | Restart and full container recreation each became healthy and repeated HTTP/security checks successfully |
-| AMD64 emulated runtime | Failed: esbuild's Go runtime aborted with `fatal error: lfstack.push`; native AMD64 validation is required |
+| AMD64 emulated runtime | Failed locally: esbuild's Go runtime aborted with `fatal error: lfstack.push`; not treated as a passing runtime test |
+| Native AMD64 CI | Passed health, root-page and Host/Origin/shared-settings boundary checks in run `38275797153` |
+| Published candidate | Unauthenticated ARM64 pull with an empty Docker configuration succeeded; package version `0.2.1`, UID 1000, healthy, HTTP/security checks passed |
+| Promotion | `latest` and `0.2.1-unraid.1` resolve to identical multi-architecture manifest `sha256:3f19aca4cce953379c8b5ac32ab669fa6d01780d9e2b6adb28844ab3f7feddf0` |
 
 ### Test environment qualifications
 
@@ -31,15 +34,22 @@ The first unit-suite attempt in the release image found missing Bash and Git-che
 
 The UI test used actual provider responses, not mocked or synthetic feeds. The full Puppeteer tracking-regression harness was not run: its default browser is Google Chrome for Testing, which is prohibited in this environment. The local Helium check is narrower than that harness.
 
-Test containers and their Compose network were removed. Local images and working evidence remain available while validation and publication are pending.
+Test containers and their Compose networks were removed. Local images and working evidence remain available for the pending deployment check.
+
+### Published evidence
+
+- Reviewed source commit: `681673b59a2283c807b9ca60bd4aaa7664d24ddb`.
+- [Container CI](https://github.com/MircoBlitz/gods-eye-view/actions/runs/38275797153): success; AMD64/ARM64 builds and native AMD64 runtime.
+- [Candidate publication](https://github.com/MircoBlitz/gods-eye-view/actions/runs/38276288742): success; version `0.2.1-unraid.1`.
+- [Manifest promotion](https://github.com/MircoBlitz/gods-eye-view/actions/runs/38278965377): success; adds `latest` without rebuilding.
+
+The owner explicitly chose to install the final published update on Unraid through the repository and test it there afterward. No private Unraid shell was used for this release preparation.
 
 ## Outstanding
 
-- Native AMD64 runtime validation, preferably the existing GitHub Container CI.
-- Approved candidate image publication, unauthenticated pull, then promotion of the tested manifest to `latest`.
 - Unraid-specific installation and public-template-path test of this update.
 - Billable/optional-provider checks remain untested and require separately approved credentials.
 
 ## Previously published release
 
-`0.1.1-unraid.1` remains the published `latest` image until the update is approved and promoted. Its previous recorded multi-architecture manifest is `sha256:ef235a0c94d56569b30bf8b7fe7d7d2a9d8861a1e50b87445b0e98ac9146feec`. The earlier release passed native GitHub CI and keyless Unraid pull/health checks; those results do not validate v0.2.1.
+`0.1.1-unraid.1` was the previous published `latest` image; it is no longer the current release. Its previous recorded multi-architecture manifest is `sha256:ef235a0c94d56569b30bf8b7fe7d7d2a9d8861a1e50b87445b0e98ac9146feec`. The earlier release passed native GitHub CI and keyless Unraid pull/health checks; those results do not validate v0.2.1.
