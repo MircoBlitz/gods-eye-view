@@ -10,10 +10,16 @@ Use no paid or private provider credential for the initial test.
 4. Confirm the image runs as a non-root user, exposes only port 4173, and defines a health check.
 5. Scan tracked files for accidental credentials.
 
+## Pre-release runtime
+
+Validate locally before publication, then require native AMD64 Container CI. Pull the published candidate without registry credentials and repeat health and HTTP/security checks on the actual artifact. Record architecture and browser limitations honestly.
+
 ## Unraid keyless runtime
 
-1. Build or pull the candidate image on Unraid.
-2. install the user template without optional credentials.
+The owner performs this deployment test after publication, exclusively through the repository.
+
+1. Install or update God's Eye View from the published Community Applications repository.
+2. Use the published template without optional credentials; do not replace it with a private user-template copy or locally built image.
 3. Confirm bridge mode, non-privileged mode, and host mapping `4173:4173`.
 4. Start the container and wait for Docker health to report healthy.
 5. Open the WebUI through the Unraid Docker page.
@@ -32,7 +38,7 @@ Use no paid or private provider credential for the initial test.
 
 1. Restart the container and repeat health and WebUI checks.
 2. Recreate it from the unchanged template and repeat.
-3. Update using an equivalent rebuilt image and verify startup again.
+3. Update through the published repository image and verify startup again.
 4. Remove the container and confirm no durable application data was promised or retained.
 
 ## Optional-provider checks
