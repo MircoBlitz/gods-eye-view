@@ -2,17 +2,17 @@
 
 Docker image and Unraid Community Applications template for [God's Eye View](https://github.com/bilawalsidhu/gods-eye-view).
 
-This source packages the upstream `v0.2.1` application at commit `aa16b7c3b0166a89d8c7a6089e0aff53a22faaee`. The source archive is checksum-verified during the build. CI validates AMD64 and ARM64 without publishing; a separate manual workflow performs an approved release.
+This source packages the upstream `v0.3.0` application at commit `72eb3fdc739991a1286b7f1251de908e9744bb2a`. The source archive is checksum-verified during the build. CI is configured to validate AMD64 and ARM64 without publishing; a separate manual workflow performs an approved release.
 
 ## Status
 
-Release `0.2.1-unraid.1` is published for AMD64 and ARM64 and promoted unchanged to `latest`. It passed native AMD64 CI, both architecture builds, local ARM64 WebUI/live-data/lifecycle checks, the upstream unit suite, and an unauthenticated candidate pull/runtime check. The owner will validate the update on Unraid by installing from the published Community Applications repository; that deployment test is still outstanding. See [test results](docs/test-results.md).
+The `v0.3.0` candidate passed local AMD64/ARM64 builds, native ARM64 unit/build checks, keyless WebUI checks, and the required HTTP/lifecycle checks. Local AMD64 emulation failed in esbuild; native AMD64 CI remains required. No v0.3.0 image has been published or promoted to `latest`, and the staged template must not be published before the corresponding image. See [test results](docs/test-results.md) for limitations and the remaining release gates.
 
-Upstream's official Docker path is still an open [pull request #208](https://github.com/bilawalsidhu/gods-eye-view/pull/208), without GHCR publishing. This packaging remains necessary until an official suitable image is available.
+Upstream now includes an official Dockerfile and Compose setup. That setup builds from a checkout and is aimed at a loopback-bound personal installation. No usable published application-image reference was identified in the inspected v0.3.0 release files, so this repository continues to build the image used by the Unraid template.
 
 ## What works without keys
 
-The app starts without an account or API key. Its keyless paths include Esri satellite imagery with OSM fallback, flights, military traffic, satellites, earthquakes, public cameras, radio, launches, bikeshare, and simulated road traffic. Optional providers add photorealistic 3D, place search, voice, ships, fires, and live traffic-flow speeds.
+The app starts without an account or API key. Its keyless paths include Esri satellite imagery with OSM fallback, flights, military traffic, satellites, earthquakes, public camera packs, radio, launches, bikeshare, simulated road traffic, and Panoramax/KartaView Street Level imagery. Optional providers add photorealistic 3D, Google places/geocoding, Mapillary, voice, ships, fires, Ontario 511 cameras, and live traffic-flow speeds. Individual live feeds remain subject to provider availability and terms.
 
 ## Install on Unraid
 
@@ -36,11 +36,11 @@ No provider credential is required for the first start. Add optional credentials
 
 God's Eye View is an exploratory application, not a hardened multi-user service. The container listens on the Unraid host so browsers on the LAN can use it, but the app has no login. Anyone who can reach it can call its provider-backed endpoints and consume configured quotas.
 
-Use it only on a trusted LAN/VPN or behind a separately reviewed authenticated reverse proxy. Set provider-side restrictions, quotas, and spending limits before adding billable credentials. The template enables application-level request limits for OpenAI and Google, but these are not billing caps.
+Use it only on a trusted LAN/VPN or behind a separately reviewed authenticated reverse proxy. Set provider-side restrictions, quotas, and spending limits before adding billable credentials. The template enables application-level request limits for OpenAI, Gemini, and Google, but these are not billing caps.
 
-`GOOGLE_MAPS_API_KEY` and `CESIUM_ION_TOKEN` are deliberately delivered to the browser by the upstream app. Treat them as public client credentials and restrict them at their providers. Other configured keys remain server-side.
+`GOOGLE_MAPS_API_KEY`, `CESIUM_ION_TOKEN`, and `MAPILLARY_CLIENT_TOKEN` are deliberately delivered to the browser. Treat them as public client credentials and restrict them at their providers. Use `GOOGLE_MAPS_SERVER_API_KEY` for server-side Places/geocoding rather than relying on a referrer-restricted browser key. Gemini and the other configured private provider keys remain server-side.
 
-See [security](docs/security.md) and upstream's [SECURITY.md](https://github.com/bilawalsidhu/gods-eye-view/blob/v0.2.1/SECURITY.md).
+See [security](docs/security.md) and upstream's [SECURITY.md](https://github.com/bilawalsidhu/gods-eye-view/blob/v0.3.0/SECURITY.md).
 
 ## Image behavior
 
@@ -51,7 +51,9 @@ The container runs the upstream Vite server because it owns the application's sa
 - health check: HTTP request to `127.0.0.1:4173`
 - persistent application data: none
 - provider credentials: Unraid environment variables
-- transient proxy caches: container writable layer; removed with the container
+- transient provider caches and TomTom budget state: container writable layer; removed with the container
+
+The image deliberately starts `npm run dev`, not upstream's Docker launcher. It does not automatically trust the Docker gateway for Provider Settings. Configure keys through the template; experimental local ChatGPT/Codex OAuth voice is not part of this shared-container integration.
 
 ## Updates
 

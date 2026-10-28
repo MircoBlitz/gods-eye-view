@@ -74,6 +74,27 @@ jobs:
           test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/api/setup/status)" = 403
           test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Origin: http://foreign.invalid' -H 'Content-Type: application/json' --data '{}' http://127.0.0.1:4173/api/realtime/token)" = 403
 
+      - name: Verify v0.3.0 keyless provider behavior
+        run: |
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Origin: http://127.0.0.1:4173' -H 'Content-Type: application/json' --data '{}' http://127.0.0.1:4173/api/setup/keys)" = 403
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Content-Type: application/json' --data '{}' http://127.0.0.1:4173/api/gemini/token)" = 403
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Origin: http://foreign.invalid' -H 'Content-Type: application/json' --data '{}' http://127.0.0.1:4173/api/gemini/token)" = 403
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Origin: http://127.0.0.1:4173' -H 'Content-Type: application/json' --data '{}' http://127.0.0.1:4173/api/gemini/token)" = 503
+          curl --fail --silent --show-error http://127.0.0.1:4173/api/mapillary/status | python3 -c 'import json, sys; assert json.load(sys.stdin)["configured"] is False'
+          test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' http://127.0.0.1:4173/api/mapillary/tiles/coverage/11/0/0)" = 503
+          curl --fail --silent --show-error 'http://127.0.0.1:4173/api/google/geocode?address=London' | python3 -c 'import json, sys; body = json.load(sys.stdin); assert body["configured"] is False and body["results"] == []'
+          curl --fail --silent --show-error 'http://127.0.0.1:4173/api/google/reverse-geocode?lat=51.5&lon=-0.1' | python3 -c 'import json, sys; body = json.load(sys.stdin); assert body["configured"] is False and body["results"] == []'
+
+      - name: Verify new provider request boundaries
+        run: |
+          for path in /api/mapillary/status '/api/google/geocode?address=London' '/api/google/reverse-geocode?lat=51.5&lon=-0.1'; do
+            test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Origin: http://foreign.invalid' "http://127.0.0.1:4173$path")" = 403
+            test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Origin: null' "http://127.0.0.1:4173$path")" = 403
+            test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Sec-Fetch-Site: cross-site' "http://127.0.0.1:4173$path")" = 403
+            test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'X-Forwarded-For: 192.0.2.1' "http://127.0.0.1:4173$path")" = 403
+            test "$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' -H 'Host: foreign.invalid' "http://127.0.0.1:4173$path")" = 403
+          done
+
       - name: Record diagnostics
         if: always()
         run: |
