@@ -12,7 +12,7 @@ Use no paid or private provider credential for the initial test.
 
 ## Pre-release runtime
 
-Validate locally before publication, then require native AMD64 Container CI. Pull the published candidate without registry credentials and repeat health and HTTP/security checks on the actual artifact. Record architecture and browser limitations honestly.
+Validate locally before publication, then require native AMD64 Container CI. Pull the published candidate without registry credentials and repeat health and HTTP/security checks on the actual artifact. Record architecture and browser limitations honestly. Run the unchanged upstream unit suite and production build in a disposable test environment with the supported Node runtime and Git available; do not add test-only dependencies to the shipped image.
 
 ## Unraid keyless runtime
 
@@ -31,8 +31,11 @@ The owner performs this deployment test after publication, exclusively through t
 
 1. Confirm the app is reachable from an intended LAN client.
 2. Confirm it is not forwarded or exposed to the Internet.
-3. Confirm in-app Provider Settings cannot write credentials in shared mode.
-4. Confirm no credential value appears in logs.
+3. Confirm `/api/setup/status` and `POST /api/setup/keys` refuse shared-network clients, including requests with a spoofed local Host. Do not enable gateway trust for this image.
+4. Confirm foreign/opaque Origin, cross-site fetch metadata, forwarded headers, and foreign Host are refused on new Google, Mapillary, and Gemini routes before provider credentials would be used.
+5. Without keys, verify Mapillary reports unconfigured, Google geocoding reports empty unconfigured results, and Gemini token creation returns 503 for an otherwise admitted same-origin request. Gemini requests without Origin must be refused.
+6. Confirm `.env`, local provider configuration, cache/log directories, and generated build output are not exposed as static server content. Check response headers without printing file bodies.
+7. Confirm no credential value appears in logs.
 
 ## Lifecycle
 
