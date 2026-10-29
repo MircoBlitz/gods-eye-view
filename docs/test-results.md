@@ -1,8 +1,30 @@
 # Test results
 
+## v0.3.0 published release — 2026-10-28
+
+Release `0.3.0-unraid.1` is published for AMD64/ARM64 and promoted to `latest` without rebuilding. The following evidence supersedes the publication gates from local preparation below. No private or paid provider credential was used, and no Unraid deployment test was performed.
+
+- Packaging source commit: `1902e051d6599165341ed31473939771e995dcb1`.
+- [Container CI](https://github.com/MircoBlitz/gods-eye-view/actions/runs/40661083855): success; AMD64/ARM64 builds and native AMD64 startup/security checks.
+- [Candidate publication](https://github.com/MircoBlitz/gods-eye-view/actions/runs/40770841667): success; version `0.3.0-unraid.1`.
+- [Manifest promotion](https://github.com/MircoBlitz/gods-eye-view/actions/runs/40784821439): success; adds `latest` without rebuilding.
+- Anonymous registry verification confirmed that `latest`, `0.3.0-unraid.1`, and `sha-1902e05` all resolve to `sha256:462d9ecf2660e1c7ee9d2b197920667a31a772c32a9337b019a087befce9a2c4`.
+
+### Published artifact verification
+
+An anonymous pull using an empty Docker configuration succeeded for that exact index digest. The artifact ran natively on ARM64 as UID/GID 1000 (`node`), with package version `0.3.0`, Node `v24.22.1`, only port `4173`, and `npm run dev`; no gateway trust or provider credentials were supplied.
+
+Docker health, root/security headers, provider admission and missing-credential behavior passed. Provider Settings refused spoofed local Host/Origin requests. Eight provider routes refused tested foreign/opaque Origin, cross-site, foreign-Host and forwarding-header requests. Restart and recreation from the same immutable digest each reached healthy and passed 12 representative root/security/provider checks (24 total), without persistent mounts.
+
+These results do not mean every harness run passed. The initial HTTP harness exited 1 with 89 of 100 assertions passing. Eleven absent-static-path status assumptions failed because those paths returned HTTP 200 HTML, consistent with SPA fallback. File inspection confirmed the targets absent, but response bodies were not inspected. Follow-up checks against the existing `.env.example` and harmless fixtures in actual `/app/dist`, `.gev-cache`, `.gev-logs`, and `.env.candidate-boundary` returned 403 for normal and `/@fs/app/...` URLs (10/10, exit 0). These fixtures were test doubles, not application functionality; no `/rootdist` fixture was used in this published-artifact test.
+
+An initial lifecycle observer accepted an old health event and then failed its immediate state assertion. After inspecting state and event timestamps, the disposable observer was corrected to filter events by action-start time; the subsequent restart/recreation test exited 0. This correction does not turn the earlier failed run into a pass.
+
+The published artifact was runtime-tested only on ARM64. AMD64 manifest/configuration inspection and prior native source CI are not a runtime test of the published AMD64 artifact. No published-artifact browser/WebUI retest, external-feed functional E2E, configured-provider test or Unraid test was performed. The limited final-container log scan found no matching Google/GitHub/OpenAI token patterns in 147 bytes; it was not a comprehensive credential audit. Publication/promotion verification proves image identity, not deployment behavior.
+
 ## v0.3.0 local preparation — 2026-10-28
 
-This candidate has not been published or promoted to `latest`. The staged templates describe the candidate, not a newly available public image. No private or paid provider credential was used, and the running Unraid installation was not changed.
+The following results describe local preparation before publication and promotion, not tests of the published artifact. No private or paid provider credential was used, and the running Unraid installation was not changed.
 
 Source: `v0.3.0`, commit `72eb3fdc739991a1286b7f1251de908e9744bb2a`.
 Commit archive SHA-256: `64891e03f3469ed5577daa00f982277bd9a07377c9053ae6e85a1f7d1e1ab0c5`.
@@ -28,7 +50,7 @@ Commit archive SHA-256: `64891e03f3469ed5577daa00f982277bd9a07377c9053ae6e85a1f7
 | AMD64 emulated runtime | Failed with `fatal error: lfstack.push` in esbuild's Go runtime; no native AMD64 verdict follows |
 | Credential-pattern check | No obvious private-key/GitHub/OpenAI token patterns in tracked packaging text; heuristic only |
 | Targeted security review | No supported defects found in the changed packaging/provider/template/docs/CI path; source-and-evidence review, not a full upstream audit or runtime retest |
-| Publication and Unraid update | Not performed |
+| Publication and Unraid update | Not performed during local preparation; subsequent publication/promotion evidence is recorded above |
 
 ### Test qualifications
 
@@ -40,12 +62,11 @@ The keyless browser check used a separate headless Helium session because remote
 
 All test containers, networks, image tags, sentinel fixtures, and the task-owned browser session were removed. No user container or provider account was modified.
 
-### Remaining release gates
+### Remaining verification
 
-- Native AMD64 Container CI on the reviewed source.
-- Approved publication of a candidate, then an unauthenticated pull and runtime check of that actual registry artifact.
-- Approved promotion of the tested manifest and publication of its matching Community Applications template.
-- Owner's Unraid installation/update through the final published repository.
+The matching [Community Applications template](https://raw.githubusercontent.com/MircoBlitz/unraid-community-apps/main/templates/gods-eye-view.xml) was published at commit `4b335f5e75a3716d37b327d3a0cb97456e602986`. Its 7,919 public bytes matched the tracked file; XML, v0.3.0 metadata, optional new provider fields and Gemini's default of 30 requests/minute were verified.
+
+- Owner's Unraid installation/update through the final published repository, followed by health, WebUI, keyless-layer, restart and recreation checks.
 - Billable/optional-provider checks, including Gemini voice and configured Google/Mapillary, remain untested and require separate approved credentials.
 
 ## v0.2.1 update — 2026-10-12
