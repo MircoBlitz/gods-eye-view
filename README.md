@@ -6,7 +6,7 @@ This source packages the upstream `v0.3.0` application at commit `72eb3fdc739991
 
 ## Status
 
-The `v0.3.0` candidate passed local AMD64/ARM64 builds, native ARM64 unit/build checks, keyless WebUI checks, and the required HTTP/lifecycle checks. Local AMD64 emulation failed in esbuild; native AMD64 CI remains required. No v0.3.0 image has been published or promoted to `latest`, and the staged template must not be published before the corresponding image. See [test results](docs/test-results.md) for limitations and the remaining release gates.
+Release `0.3.0-unraid.1` is published for AMD64/ARM64 and promoted unchanged to `latest`. Native AMD64 CI passed; an anonymous pull of the published artifact and native ARM64 health, HTTP/provider-security, restart and recreation checks passed. Local preparation also covered unit/build and keyless WebUI checks, but some test harness runs failed; the published artifact was not browser-tested or runtime-tested on AMD64. The matching Community Applications template is published and its public XML verified. The owner's Unraid deployment test remains outstanding. See [test results](docs/test-results.md) for workflow links, the image digest, and test limitations.
 
 Upstream now includes an official Dockerfile and Compose setup. That setup builds from a checkout and is aimed at a loopback-bound personal installation. No usable published application-image reference was identified in the inspected v0.3.0 release files, so this repository continues to build the image used by the Unraid template.
 
